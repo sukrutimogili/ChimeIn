@@ -2,5 +2,10 @@
   "manifest_version": 3,
   "name": "ChimeIn",
   "version": "1.0.0",
-  "description": "Never miss a hackathon deadline again"
+  "description": "Never miss a hackathon deadline again",
+  "permissions": ["identity"],
+  "oauth2": {
+    "client_id": "1084139317632-adm3j5v8897l2c3e17m37886tagbg6ro.apps.googleusercontent.com",
+    "scopes": ["https://www.googleapis.com/auth/calendar.events"]
+  }
 }
