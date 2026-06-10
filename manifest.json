@@ -3,10 +3,14 @@
   "name": "ChimeIn",
   "version": "1.0.0",
   "description": "Never miss a hackathon deadline again",
-  "permissions": ["identity", "storage"],
+  "permissions": ["identity", "storage", "tabs", "sidePanel", "scripting"],
+  "host_permissions": ["<all_urls>"],
   "oauth2": {
     "client_id": "your_client_id_here",
     "scopes": ["https://www.googleapis.com/auth/calendar.events"]
+  },
+  "side_panel": {
+    "default_path": "sidebar/sidebar.html"
   },
   "background": {
     "service_worker": "background/service-worker.js",

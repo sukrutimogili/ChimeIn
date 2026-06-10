@@ -1,8 +1,18 @@
-import { GROQ_API_URL, GROQ_MODEL } from '../utils/constants.js';
+import { GROQ_API_URL, GROQ_MODEL, MAX_PAGE_TEXT_CHARS } from '../utils/constants.js';
 import { extractionPrompt } from './prompt-template.js';
 
 export const extractMilestones = async (pageText) => {
-  const apiKey = process.env.GROQ_API_KEY;
+  const storageResult = await chrome.storage.local.get('GROQ_API_KEY');
+  const apiKey = storageResult.GROQ_API_KEY;
+
+  if (!apiKey) {
+    throw new Error("Groq API key not found in storage. Please check your config.");
+  }
+
+  // Truncate page text to avoid exceeding Groq's context window (causes 400)
+  const truncatedText = pageText.length > MAX_PAGE_TEXT_CHARS
+    ? pageText.slice(0, MAX_PAGE_TEXT_CHARS) + "\n\n[... page truncated ...]"
+    : pageText;
 
   const response = await fetch(GROQ_API_URL, {
     method: "POST",
@@ -15,7 +25,7 @@ export const extractMilestones = async (pageText) => {
       messages: [
         {
           role: "user",
-          content: extractionPrompt(pageText)
+          content: extractionPrompt(truncatedText)
         }
       ],
       temperature: 0.2
@@ -23,7 +33,8 @@ export const extractMilestones = async (pageText) => {
   });
 
   if (!response.ok) {
-    throw new Error(`Groq API error: ${response.status}`);
+    const errorBody = await response.text();
+    throw new Error(`Groq API error: ${response.status} — ${errorBody}`);
   }
 
   const data = await response.json();

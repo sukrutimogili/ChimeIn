@@ -11,17 +11,20 @@ const buildReminders = (reminderDays) => {
 export const createCalendarEvent = async (milestone, reminderDays) => {
   const token = await getAuthToken();
 
+  const startTime = new Date(milestone.date);
+  const endTime = new Date(startTime.getTime() + 30 * 60 * 1000); // +30 minutes
+
   const event = {
     summary: milestone.name,
     description: milestone.eventName
       ? `Event: ${milestone.eventName}${milestone.theme ? `\nTheme: ${milestone.theme}` : ""}`
       : "",
     start: {
-      dateTime: milestone.date,
+      dateTime: startTime.toISOString(),
       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
     },
     end: {
-      dateTime: milestone.date,
+      dateTime: endTime.toISOString(),
       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
     },
     reminders: {
