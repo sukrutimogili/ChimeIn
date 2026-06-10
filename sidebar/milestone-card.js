@@ -34,7 +34,8 @@ export function createMilestoneCard(milestone, index, onApprove, onReject, onDat
   const dateInput = card.querySelector('.date-input');
   if (dateInput) {
     dateInput.addEventListener('change', (e) => {
-      onDateSet(index, e.target.value);
+    const localDate = new Date(e.target.value);
+    onDateSet(index, localDate.toISOString());
     });
   }
 

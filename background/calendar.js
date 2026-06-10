@@ -1,5 +1,5 @@
 import { CALENDAR_API_BASE } from '../utils/constants.js';
-import { getAuthToken } from './auth.js';
+import { getAuthToken , revokeAuthToken } from './auth.js';
 
 const buildReminders = (reminderDays) => {
   return reminderDays.map((day) => ({
@@ -11,8 +11,13 @@ const buildReminders = (reminderDays) => {
 export const createCalendarEvent = async (milestone, reminderDays) => {
   const token = await getAuthToken();
 
-  const startTime = new Date(milestone.date);
-  const endTime = new Date(startTime.getTime() + 30 * 60 * 1000); // +30 minutes
+  // Normalize datetime-local strings (no tz suffix) to avoid UTC misparse
+  const rawDate = milestone.date;
+  const startTime = rawDate.includes('Z') || rawDate.match(/[+-]\d{2}:\d{2}$/)
+    ? new Date(rawDate)
+    : new Date(rawDate + ':00');
+
+  const endTime = new Date(startTime.getTime() + 30 * 60 * 1000);
 
   const event = {
     summary: milestone.name,
@@ -42,10 +47,19 @@ export const createCalendarEvent = async (milestone, reminderDays) => {
     body: JSON.stringify(event)
   });
 
-  if (!response.ok) {
-    throw new Error(`Calendar API error: ${response.status}`);
+  if (response.status === 401) {
+    await revokeAuthToken(token);
+    const freshToken = await getAuthToken();
+    const retry = await fetch(`${CALENDAR_API_BASE}/calendars/primary/events`, {
+      method: "POST",
+      headers: { "Authorization": `Bearer ${freshToken}`, "Content-Type": "application/json" },
+      body: JSON.stringify(event)
+    });
+    if (!retry.ok) throw new Error(`Calendar API error: ${retry.status}`);
+    return await retry.json();
   }
 
+  if (!response.ok) throw new Error(`Calendar API error: ${response.status}`);
   return await response.json();
 };
 
@@ -56,9 +70,17 @@ export const createAllEvents = async (milestones, reminderDaysMap) => {
     )
   );
 
-  return results.map((result, i) => ({
+  const mapped = results.map((result, i) => ({
     milestone: milestones[i].name,
     status: result.status,
     error: result.reason?.message || null
   }));
+
+  const failures = mapped.filter(r => r.status === 'rejected');
+  if (failures.length > 0) {
+    const msg = failures.map(f => `${f.milestone}: ${f.error}`).join('; ');
+    throw new Error(`Some events failed to push: ${msg}`);
+  }
+
+  return mapped;
 };

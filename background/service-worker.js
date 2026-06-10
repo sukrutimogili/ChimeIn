@@ -1,6 +1,6 @@
 import { GROQ_API_KEY } from './config.js';
 import { extractMilestones } from '../ai/parser.js';
-import { createAllEvents } from './calendar.js';
+import { createAllEvents } from '../background/calendar.js';
 import { isDuplicate, markAsAdded } from '../utils/duplicate-check.js';
 
 chrome.runtime.onInstalled.addListener(() => {

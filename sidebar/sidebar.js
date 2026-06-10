@@ -151,11 +151,11 @@ document.getElementById('btn-reset').addEventListener('click', () => {
 
 document.getElementById('btn-push').addEventListener('click', () => {
   const toPush = milestones
-    .filter((_, i) => !rejectedIndices.has(i))
-    .map(m => ({ ...m, eventName: document.getElementById('event-name').textContent }));
+    .filter((milestone, i) => !rejectedIndices.has(i) && milestone.date)
+    .map(milestone => ({ ...milestone, eventName: document.getElementById('event-name').textContent }));
 
   if (toPush.length === 0) {
-    document.getElementById('error-message').textContent = 'No checkpoints to push. Approve at least one.';
+    document.getElementById('error-message').textContent = 'No checkpoints with valid dates. Set dates before pushing.';
     show('state-error');
     return;
   }
