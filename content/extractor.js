@@ -7,7 +7,7 @@ const getPageText = () => {
 const notifyServiceWorker = (pageText) => {
   return new Promise((resolve, reject) => {
     chrome.runtime.sendMessage(
-      { type: "EXTRACT_MILESTONES", pageText },
+      { type: "EXTRACT_MILESTONES", pageText, pageUrl: window.location.href },
       (response) => {
         if (chrome.runtime.lastError) {
           reject(chrome.runtime.lastError);
