@@ -5,10 +5,17 @@
   "description": "Never miss a hackathon deadline again",
   "permissions": ["identity", "storage"],
   "oauth2": {
-    "client_id": "1084139317632-adm3j5v8897l2c3e17m37886tagbg6ro.apps.googleusercontent.com",
+    "client_id": "your_client_id_here",
     "scopes": ["https://www.googleapis.com/auth/calendar.events"]
   },
-  "action": {
-    "default_popup": "sidebar/sidebar.html"
-  }
+  "background": {
+    "service_worker": "background/service-worker.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/extractor.js"]
+    }
+  ]
 }
