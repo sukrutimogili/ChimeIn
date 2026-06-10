@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChimeIn</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Jacquard+12&family=Outfit:wght@300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="sidebar.css" />
+</head>
+<body>
+  <div id="app">
+
+    <header id="header">
+      <div id="brand">
+        <span id="logo">ChimeIn</span>
+      </div>
+      <div id="event-meta" class="hidden">
+        <span id="event-name"></span>
+        <span id="event-source"></span>
+      </div>
+      <div id="checkpoint-badge" class="hidden">
+        <span id="checkpoint-count"></span> CHECKPOINTS FOUND
+      </div>
+    </header>
+
+    <main id="main-content">
+
+      <section id="state-idle">
+        <p class="state-label">// READY</p>
+        <p class="state-desc">Open a hackathon or competition page, then click scan.</p>
+        <button id="btn-scan">SCAN PAGE</button>
+      </section>
+
+      <section id="state-loading" class="hidden">
+        <p class="state-label">// SCANNING</p>
+        <div id="loading-dots"><span>.</span><span>.</span><span>.</span></div>
+      </section>
+
+      <section id="state-error" class="hidden">
+        <p class="state-label">// ERROR</p>
+        <p id="error-message" class="state-desc"></p>
+        <button id="btn-retry">RETRY</button>
+      </section>
+
+      <section id="state-results" class="hidden">
+        <div id="review-header">
+          <span id="review-count"></span>
+          <span class="dim">CHECKPOINTS TO REVIEW</span>
+        </div>
+
+        <p class="section-label">// CHECKPOINTS</p>
+        <div id="checkpoint-list"></div>
+
+        <p class="section-label">// REMINDERS</p>
+        <div id="reminder-list"></div>
+
+        <div id="push-row">
+          <button id="btn-push">PUSH TO CALENDAR</button>
+        </div>
+      </section>
+
+      <section id="state-success" class="hidden">
+        <p class="state-label">// DONE</p>
+        <p class="state-desc">All checkpoints added to your Google Calendar.</p>
+        <button id="btn-reset">SCAN ANOTHER</button>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="milestone-card.js" type="module"></script>
+  <script src="reminder-picker.js" type="module"></script>
+  <script src="sidebar.js" type="module"></script>
+</body>
+</html>

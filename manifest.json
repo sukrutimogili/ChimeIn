@@ -7,5 +7,8 @@
   "oauth2": {
     "client_id": "1084139317632-adm3j5v8897l2c3e17m37886tagbg6ro.apps.googleusercontent.com",
     "scopes": ["https://www.googleapis.com/auth/calendar.events"]
+  },
+  "action": {
+    "default_popup": "sidebar/sidebar.html"
   }
 }

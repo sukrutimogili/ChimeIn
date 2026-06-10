@@ -1,0 +1,422 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Jacquard+12&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --black: #f5f5f0;
+  --white: #0a0a0a;
+  --mid: #888;
+  --border: #2a2a2a;
+  --border-dashed: #3a3a3a;
+  --font-mono: 'DM Mono', monospace;
+  --font-pixel: 'Jacquard 12', serif;
+  --font-outfit: 'Outfit', sans-serif;
+}
+
+html, body {
+  width: 360px;
+  min-height: 100vh;
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* HEADER */
+header {
+  padding: 18px 16px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+#logo {
+  font-family: var(--font-pixel);
+  font-size: 36px;
+  color: var(--white);
+  display: block;
+  line-height: 1;
+  letter-spacing: 1px;
+}
+
+#event-meta {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+#event-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+#event-source {
+  font-size: 11px;
+  color: var(--mid);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+#checkpoint-badge {
+  display: inline-block;
+  margin-top: 10px;
+  border: 1px solid var(--white);
+  padding: 3px 8px;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+/* MAIN */
+#main-content {
+  flex: 1;
+  padding: 0 16px 24px;
+}
+
+/* STATES */
+section[id^="state-"] {
+  padding-top: 20px;
+}
+
+.state-label {
+  font-size: 11px;
+  color: var(--mid);
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.state-desc {
+  font-size: 12px;
+  color: var(--mid);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+/* LOADING DOTS */
+#loading-dots {
+  display: flex;
+  gap: 4px;
+  font-size: 24px;
+  color: var(--white);
+}
+
+#loading-dots span {
+  animation: blink 1.2s infinite;
+}
+#loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+#loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes blink {
+  0%, 80%, 100% { opacity: 0.2; }
+  40% { opacity: 1; }
+}
+
+/* REVIEW HEADER */
+#review-header {
+  padding: 16px 0 12px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+#review-count {
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.dim {
+  font-size: 10px;
+  color: var(--mid);
+  letter-spacing: 0.8px;
+}
+
+/* SECTION LABELS */
+.section-label {
+  font-size: 10px;
+  color: var(--mid);
+  letter-spacing: 1px;
+  margin: 16px 0 10px;
+}
+
+/* CHECKPOINT LIST */
+#checkpoint-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* REMINDER LIST */
+#reminder-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.reminder-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+
+.reminder-row:first-child {
+  border-top: 1px solid var(--border);
+}
+
+.reminder-name {
+  color: var(--white);
+}
+
+.reminder-tag {
+  border: 1px solid var(--white);
+  padding: 2px 8px;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  background: transparent;
+  color: var(--white);
+  font-family: var(--font-mono);
+}
+
+.reminder-tag:hover {
+  background: var(--white);
+  color: var(--black);
+}
+
+/* BUTTONS */
+button {
+  font-family: var(--font-outfit);
+  font-weight: 300;
+  font-size: 12px;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  border: 1px solid var(--white);
+  background: transparent;
+  color: var(--white);
+  padding: 8px 16px;
+  transition: background 0.1s, color 0.1s;
+}
+
+button:hover {
+  background: var(--white);
+  color: var(--black);
+}
+
+button:active {
+  opacity: 0.8;
+}
+
+/* PUSH TO CALENDAR - filled */
+#btn-push {
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  background: var(--white);
+  color: var(--black);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  border: 1px solid var(--white);
+}
+
+#btn-push:hover {
+  background: transparent;
+  color: var(--white);
+}
+
+#push-row {
+  margin-top: 4px;
+}
+
+/* MILESTONE CARD */
+.milestone-card {
+  border: 1px solid var(--border);
+  padding: 12px;
+}
+
+.milestone-card.confirmed {
+  border-color: var(--border);
+}
+
+.milestone-card.missing {
+  border: 1px dashed var(--border-dashed);
+}
+
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.card-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--white);
+}
+
+.card-status {
+  font-size: 10px;
+  letter-spacing: 0.8px;
+  padding: 2px 6px;
+  border: 1px solid;
+}
+
+.card-status.confirmed {
+  color: var(--mid);
+  border-color: var(--border);
+}
+
+.card-status.missing {
+  color: var(--white);
+  border-color: var(--white);
+}
+
+.card-date {
+  font-size: 11px;
+  color: var(--mid);
+  margin-bottom: 10px;
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.card-actions button {
+  font-size: 11px;
+  padding: 5px 10px;
+  letter-spacing: 0.5px;
+}
+
+/* APPROVE is filled */
+.btn-approve {
+  background: var(--white) !important;
+  color: var(--black) !important;
+  font-weight: 500;
+}
+
+.btn-approve:hover {
+  background: transparent !important;
+  color: var(--white) !important;
+}
+
+/* EDIT and REJECT are outline */
+.btn-edit, .btn-reject {
+  background: transparent;
+  color: var(--white);
+}
+
+/* Date input for missing dates */
+.date-input-row {
+  margin-bottom: 10px;
+}
+
+.date-input-row input[type="datetime-local"] {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--border-dashed);
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 5px 8px;
+  outline: none;
+}
+
+.date-input-row input[type="datetime-local"]:focus {
+  border-color: var(--white);
+}
+
+/* REMINDER PICKER MODAL */
+.reminder-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  align-items: flex-end;
+  z-index: 100;
+}
+
+.reminder-modal {
+  width: 100%;
+  background: var(--black);
+  border-top: 1px solid var(--white);
+  padding: 20px 16px 28px;
+}
+
+.reminder-modal-title {
+  font-size: 11px;
+  color: var(--mid);
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+
+.reminder-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.reminder-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.reminder-option:first-child {
+  border-top: 1px solid var(--border);
+}
+
+.reminder-option-label {
+  font-size: 12px;
+  color: var(--white);
+}
+
+.reminder-option-check {
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+
+.reminder-option.selected .reminder-option-check {
+  border-color: var(--white);
+  background: var(--white);
+  color: var(--black);
+}
+
+.reminder-modal-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.reminder-modal-actions button {
+  flex: 1;
+}
+
+/* HIDDEN */
+.hidden {
+  display: none !important;
+}
