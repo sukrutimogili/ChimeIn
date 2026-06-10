@@ -1,5 +1,12 @@
+import { GROQ_API_KEY } from './config.js';
 import { extractMilestones } from '../ai/parser.js';
 import { createAllEvents } from './calendar.js';
+
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.storage.local.set({ GROQ_API_KEY }, () => {
+    console.log("ChimeIn: Groq key seeded into storage");
+  });
+});
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "EXTRACT_MILESTONES") {

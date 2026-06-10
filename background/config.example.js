@@ -1,0 +1,1 @@
+export const GROQ_API_KEY = "your_groq_key_here";
