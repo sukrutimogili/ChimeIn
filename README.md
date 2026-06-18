@@ -12,6 +12,12 @@ ChimeIn is a minimal browser extension that:
 * **Deduplication:** Proactively cross-references your current session history to make sure you don't save duplicate schedules.
 
 ---
+## Demo
+
+<p align="center">
+  <img src="./assets/demo.gif" alt="ChimeIn Demo" width="900">
+</p>
+---
 
 ## Project Structure
 
