@@ -257,17 +257,15 @@ button:active {
   border: 1px dashed var(--border-dashed);
 }
 
-.card-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 6px;
+.card-name {
+  word-break: break-word;
+  white-space: normal;
+  overflow-wrap: break-word;
+  flex: 1;
 }
 
-.card-name {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--white);
+.card-top {
+  align-items: flex-start;
 }
 
 .card-status {

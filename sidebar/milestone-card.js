@@ -1,29 +1,34 @@
 export function createMilestoneCard(milestone, index, onApprove, onReject, onDateSet) {
+  console.log('card milestone:', milestone);
   const card = document.createElement('div');
   const isConfirmed = milestone.confidence === 'high' && milestone.date;
   card.className = `milestone-card ${isConfirmed ? 'confirmed' : 'missing'}`;
   card.dataset.index = index;
 
-  const formattedDate = milestone.date
-    ? new Date(milestone.date).toLocaleString('en-GB', {
+  const formatDate = (dateVal) => dateVal
+    ? new Date(dateVal).toLocaleString('en-GB', {
         day: '2-digit', month: 'short', year: 'numeric',
         hour: '2-digit', minute: '2-digit'
       })
     : 'date unclear – tap to set';
 
-  card.innerHTML = `
+  const hackathonPrefix = milestone.eventName
+    ? `${milestone.eventName.toLowerCase().replace(/ /g, '_')} / `
+    : '';
+
+  const displayName = hackathonPrefix + milestone.name.toLowerCase().replace(/ /g, '_');
+ 
+card.innerHTML = `
     <div class="card-top">
-      <span class="card-name">${milestone.name.toLowerCase().replace(/ /g, '_')}</span>
+      <span class="card-name">${displayName}</span>
       <span class="card-status ${isConfirmed ? 'confirmed' : 'missing'}">
         ${isConfirmed ? 'CONFIRMED' : 'DATE MISSING'}
       </span>
     </div>
-    <div class="card-date">${formattedDate}</div>
-    ${!isConfirmed ? `
-      <div class="date-input-row">
-        <input type="datetime-local" class="date-input" />
-      </div>
-    ` : ''}
+    <div class="card-date">${formatDate(milestone.date)}</div>
+    <div class="date-input-row ${isConfirmed ? 'hidden' : ''}">
+      <input type="datetime-local" class="date-input" />
+    </div>
     <div class="card-actions">
       <button class="btn-approve">APPROVE</button>
       <button class="btn-edit">EDIT</button>
@@ -32,12 +37,19 @@ export function createMilestoneCard(milestone, index, onApprove, onReject, onDat
   `;
 
   const dateInput = card.querySelector('.date-input');
-  if (dateInput) {
-    dateInput.addEventListener('change', (e) => {
+  const dateDisplay = card.querySelector('.card-date');
+  const dateRow = card.querySelector('.date-input-row');
+
+  dateInput.addEventListener('change', (e) => {
     const localDate = new Date(e.target.value);
-    onDateSet(index, localDate.toISOString());
-    });
-  }
+    milestone.date = localDate.toISOString();
+    milestone.confidence = 'high';
+    dateDisplay.textContent = formatDate(milestone.date);
+    card.className = 'milestone-card confirmed';
+    card.querySelector('.card-status').className = 'card-status confirmed';
+    card.querySelector('.card-status').textContent = 'CONFIRMED';
+    dateRow.classList.add('hidden');
+  });
 
   card.querySelector('.btn-approve').addEventListener('click', () => {
     card.style.opacity = '0.4';
@@ -53,12 +65,21 @@ export function createMilestoneCard(milestone, index, onApprove, onReject, onDat
 
   card.querySelector('.btn-edit').addEventListener('click', () => {
     const nameEl = card.querySelector('.card-name');
-    const currentName = milestone.name;
+
+    dateRow.classList.toggle('hidden');
+    if (!dateRow.classList.contains('hidden')) {
+      if (milestone.date) {
+        const d = new Date(milestone.date);
+        dateInput.value = d.toISOString().slice(0, 16);
+      }
+      dateInput.focus();
+    }
+
     nameEl.contentEditable = 'true';
     nameEl.focus();
     nameEl.addEventListener('blur', () => {
       nameEl.contentEditable = 'false';
-      milestone.name = nameEl.textContent;
+      milestone.name = nameEl.textContent.split(' [')[0].replace(/_/g, ' ');
     }, { once: true });
   });
 
