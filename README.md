@@ -17,6 +17,7 @@ ChimeIn is a minimal browser extension that:
 <p align="center">
   <img src="./assets/demo.gif" alt="ChimeIn Demo" width="900">
 </p>
+
 ---
 
 ## Project Structure
