@@ -30,7 +30,7 @@ const renderCheckpoints = () => {
     const card = createMilestoneCard(
       m, i,
       (idx) => approvedIndices.add(idx),
-      (idx) => rejectedIndices.add(idx),
+      (idx) => { rejectedIndices.add(idx); renderCheckpoints(); },
       (idx, dateVal) => { milestones[idx].date = dateVal; milestones[idx].confidence = 'high'; }
     );
     list.appendChild(card);
