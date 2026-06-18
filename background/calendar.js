@@ -13,10 +13,21 @@ export const createCalendarEvent = async (milestone, reminderDays) => {
 
   // Normalize datetime-local strings (no tz suffix) to avoid UTC misparse
   const rawDate = milestone.date;
-  const startTime = rawDate.includes('Z') || rawDate.match(/[+-]\d{2}:\d{2}$/)
-    ? new Date(rawDate)
-    : new Date(rawDate + ':00');
+  let startTime;
+  if (rawDate.includes('T') || rawDate.includes(' ')) {
+    // has time component
+    startTime = rawDate.includes('Z') || rawDate.match(/[+-]\d{2}:\d{2}$/)
+      ? new Date(rawDate)
+      : new Date(rawDate + ':00');
+  } else {
+    // date only — treat as start of day in local timezone
+    const [year, month, day] = rawDate.split('-').map(Number);
+    startTime = new Date(year, month - 1, day, 9, 0, 0); // 9am local
+  }
 
+  if (isNaN(startTime.getTime())) {
+    throw new Error(`Invalid date for "${milestone.name}": ${rawDate}`);
+  }
   const endTime = new Date(startTime.getTime() + 30 * 60 * 1000);
 
   const event = {

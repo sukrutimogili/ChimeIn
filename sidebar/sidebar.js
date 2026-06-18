@@ -159,6 +159,9 @@ document.getElementById('btn-reset').addEventListener('click', () => {
 });
 
 document.getElementById('btn-push').addEventListener('click', () => {
+  console.log('Rejected indices:', [...rejectedIndices]);
+  console.log('All milestones:', milestones.map((m, i) => ({ i, name: m.name, date: m.date })));
+
   const toPush = milestones
     .filter((milestone, i) => !rejectedIndices.has(i) && milestone.date)
     .map(milestone => ({ ...milestone, eventName: document.getElementById('event-name').textContent }));
