@@ -42,6 +42,11 @@ const renderCheckpoints = () => {
       ? `${days[0]} DAY${days[0] > 1 ? 'S' : ''} OUT`
       : 'CUSTOM';
 
+    const reminderLabel = m.eventName
+    ? `${m.eventName.toLowerCase().replace(/ /g, '_')} / ${m.name.toLowerCase().replace(/ /g, '_')}`
+    : m.name.toLowerCase().replace(/ /g, '_');
+
+
     row.innerHTML = `
       <span class="reminder-name">${m.name.toLowerCase().replace(/ /g, '_')}</span>
       <button class="reminder-tag" data-name="${m.name}">${tagLabel}</button>
@@ -122,7 +127,11 @@ document.getElementById('btn-scan').addEventListener('click', async () => {
         return;
       }
 
-      milestones = result.data.milestones || [];
+      milestones = (result.data.milestones || []).map(m => ({
+        ...m,
+        eventName: result.data.eventName || '',
+        theme: result.data.theme || null
+      }));
       approvedIndices = new Set();
       rejectedIndices = new Set();
       reminderDaysMap = {};
